@@ -2,27 +2,27 @@
 
 
 
-echo "Enter the Subnet:" 
+echo "Enter the Subnet:"
 
 read Subnet
 
 
 
-if [ "$Subnet" == "" ]
+if [ "$Subnet" == "" ]; then
 
-then
-
-        echo "Enter the Subnet:"
-
-        echo "Syntax Example = ./ping_sweep.sh 10.1.147"
+    echo "Syntax Example = ./ping_sweep.sh 10.1.147"
 
 else
 
-        for IP in $(seq 1 254); do
+    for IP in $(seq 1 254); do
 
-                ping -c 1 $Subnet.$IP | grep "64 bytes" | cut -d " " -f 4 | tr -d ":" >> discoveredIPS_Jalali.txt &
+        ping -c 1 $Subnet.$IP | grep "64 bytes" | cut -d " " -f 4 | tr -d ":" >> discoveredIPS_Jalali.txt &
 
-        done
+    done
+
+    wait
+
+    nmap -T4 -sV -A -iL discoveredIPS_Jalali.txt -oN PortScanIPs.txt
 
 fi
 
